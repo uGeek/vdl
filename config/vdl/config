@@ -1,0 +1,10 @@
+YOUTUBE="yt-dlp" #"/usr/local/bin/youtube-dl"
+FORMAT=""        #"--format mp4"
+
+
+DIR=/home/usuario/vdl/audio
+DIRV=/home/usuario/vdl/video
+LANG=en,es,fr,it,ca
+NUBE="drive:
+
+LC_ALL="es_ES.UTF-8"   #Idioma título
