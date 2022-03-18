@@ -1,0 +1,343 @@
+#!/bin/bash
+#
+# vdl
+#
+VERSION="       Version: 2022.03.18"
+EDITOR="nano"
+COPY=$(xclip -o)
+clear
+
+
+
+
+mkdir -p ~/.config/vdl
+
+
+if [ -f ~/.config/vdl/config ];
+then
+    echo ""
+	else
+	    echo -en "No has indicado ningún archivo de configuración o no existe. ¿Quieres crearlo?: " ; read RESPUESTA
+	    if [ "$RESPUESTA" = "SI" ] || [ "$RESPUESTA" = "S" ] || [ "$RESPUESTA" = "si" ] || [ "$RESPUESTA" = "s" ] || [ "$RESPUESTA" = "y" ] || [ "$RESPUESTA" = "yes" ]
+        then
+        $EDITOR ~/.config/vdl/config
+        clear
+        fi
+exit
+fi
+
+
+if [ -f ~/.config/vdl/vdl.pg ];
+then
+    echo ""
+	else
+	    echo -en "No hay ningún pluging de vdl. Es necesario crear aunque sea un archivo en blanco, para que no te pregunte cada vez que ejecutes un comnado. ¿Quieres crearlo ahora?: " ; read RESPUESTA
+	    if [ "$RESPUESTA" = "SI" ] || [ "$RESPUESTA" = "S" ] || [ "$RESPUESTA" = "si" ] || [ "$RESPUESTA" = "s" ] || [ "$RESPUESTA" = "y" ] || [ "$RESPUESTA" = "yes" ]
+        then
+        $EDITOR ~/.config/vdl/vdl.pg
+        clear
+        fi
+exit
+fi
+
+
+source ~/.config/vdl/config
+
+if [ "$1" = "h" ]; then
+    echo ""
+    echo -e "\e[1mvdl"
+    echo "Descarga Videos y audios de Youtube y más de 1000 páginas de Internet "
+    echo ""
+    echo ""
+    echo "Audio"
+    echo "------------------------------------------"
+    echo -e "COMANDO                  \e[1mSIGNIFICADO "
+    echo "a                           Extraer audio y guardar en el directorio que estás situado (audio aquí)"
+    echo "ac                          Extraer audio y guardar en el directorio del archivo de config y creando otro con el nombre del canal"
+    echo "a-mp3                       Extraer audio en mp3 y guardar en el directorio que estás situado (audio aquí)"
+    echo "ac-mp3                      Extraer audio en mp3 y guardar en el directorio del archivo de config y creando otro con el nombre del canal"
+    echo "al             lista.txt    Extraer lista en un archivo .txt Ejem: vdl al-mp3 ~/list.txt"
+    echo "al-rc      dir/lista.txt    Extraer lista en un archivo .txt en la nube Ejem: vdl al-mp3-rc musica/list.txt"
+    echo "al-mp3         lista.txt    Extraer lista en un archivo .txt Ejem: vdl al-mp3 ~/list.txt"
+    echo "al-mp3-rc  dir/lista.txt    Extraer lista en un archivo .txt en la nube Ejem: vdl al-mp3-rc musica/list.txt"
+    echo ""
+    echo "------------------------------------------"
+    echo ""
+    echo "Vídeo"
+    echo "------------------------------------------"
+    echo -e "COMANDO                  \e[1mSIGNIFICADO "
+    echo "v                           Descargar Video, imagen y metadata, en el directorio actual. También listas"
+    echo "vc                          Descargar Video, imagen y metadata, en el directorio del archivo de config. También listas"
+    echo "vl             lista.txt    Descargar lista en un archivo .txt Ejem: vdl vl ~/list.txt"
+    echo "vlrc       dir/lista.txt    Descargar lista en un archivo .txt en la nube Ejem: vdl vl musica/list.txt"
+    echo "st                          Extraer subtitulos "
+    echo "F    (URL del portapales)   Descarga un formato concreto"
+    echo "------------------------------------------"
+    echo ""
+    echo ""
+    echo "Player"
+    echo "------------------------------------------"
+    echo "p                          Reproduce el video con MPV. Copia la url y lanza el comando"
+    echo "360"
+    echo "480"
+    echo "720                        Reproduce el video con MPV, a la resolución deseada. Ejemplo 720. Copia la url y lanza el comando"
+    echo "1080"
+    echo "pa                         Reproduce audio con MPV. Copia la url y lanza el comando"
+    echo "l   lista.txt              Reproduce lista de video en MPV"
+    echo "la  lista.txt              Reproduce lista de audio en MPV"
+    echo "rc  [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone"
+    echo "rca [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone"
+    echo ""
+    echo ""
+    echo "Instalación"
+    echo "------------------------------------------"
+    echo "-U                         Actualizar youtube-dl "
+    echo "i                          Instalar paquetes necesarios de vdl en tu distro"
+    echo "ivdl                       Instalar el script en local vdl en tu distro. Ejem: vdl ivdl /home/usuario/vdl/vdl"
+    echo "impv                       Instalar mpv a la última versión"
+    echo "ipython                    Instalar python si no está instalado en tu máquina"
+    echo "cp-ytdlp                   Copiar encima de youtube-dl ytdlp"
+fi
+
+
+source ~/.config/vdl/vdl.pg
+
+if [ "$1" = "h" ]; then
+    echo " "
+    echo " "
+    echo "vdl $VERSION"
+    echo "youtube-dl Version: $($YOUTUBE --version)"
+    echo " "
+    exit
+fi
+
+
+
+if [ "$1" = "help" ]; then
+echo "vdl "
+echo "- Que el formato de exportación sea siempre, por ejemplo, mp4. Añade FORMAT='--format mp4' a archivo config"
+
+    exit
+fi
+
+
+if [ "$1" = "a" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "%(title)s.%(ext)s" --add-metadata --embed-thumbnail --ignore-errors -x "$URL"
+exit
+fi
+
+
+if [ "$1" = "ac" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --ignore-errors -x "$URL"
+exit
+fi
+
+
+if [ "$1" = "al" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio  --ignore-errors -x -a "$2"
+    exit
+fi
+
+if [ "$1" = "al-rc" ]; then
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio  --ignore-errors -x -a "$(rclone cat "$NUBE""$2" | egrep -o 'https?://[^ ]+' | xargs)"
+    exit
+fi
+
+
+
+if [ "$1" = "a-mp3" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors -x "$URL"
+exit
+fi
+
+
+
+if [ "$1" = "ac-mp3" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors  -x "$URL"
+exit
+fi
+
+
+if [ "$1" = "al-mp3" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors -x -a "$2"
+    exit
+fi
+
+if [ "$1" = "al-mp3-rc" ]; then
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors -x -a "$(rclone cat "$NUBE""$2" | xargs)"
+    exit
+fi
+
+
+
+if [ "$1" = "vl" ]; then
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json                 --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors  $FORMAT -a "$2"
+    exit
+fi
+
+if [ "$1" = "vlrc" ]; then
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json                 --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors $FORMAT "$(rclone cat "$NUBE""$2" | xargs)"
+    exit
+fi
+
+if [ "$1" = "vlrc" ]; then
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json                 --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors $FORMAT "$(rclone cat "$NUBE""$2" | egrep -o 'https?://[^ ]+' | xargs)"
+    exit
+fi
+
+
+
+
+if [ "$1" = "v" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o '%(title)s.%(ext)s' --write-thumbnail --write-info-json --ignore-errors --write-auto-sub  --write-sub --sub-lang "$LANG" --convert-subs srt $FORMAT $URL
+exit
+fi
+
+if [ "$1" = "vc" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json  --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors $FORMAT $URL
+exit
+fi
+
+
+if [ "$1" = "vca" ]; then
+echo -ne "Introduce la url: " ; read URL
+LC_ALL=$LC_ALL $YOUTUBE -o "%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json                 --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors  $FORMAT $URL
+exit
+fi
+
+
+if [ "$1" = "p" ]; then
+    mpv  --hwdec=auto  $COPY
+    exit
+fi
+
+if [ "$1" = "360" ]; then
+    mpv --ytdl-format='bestvideo[height<=?360]+bestaudio/best' $COPY
+    exit
+fi
+
+
+
+if [ "$1" = "480" ]; then
+    mpv --ytdl-format='bestvideo[height<=?480]+bestaudio/best' $COPY
+    exit
+fi
+
+
+if [ "$1" = "720" ]; then
+    mpv --ytdl-format='bestvideo[height<=?720]+bestaudio/best' $COPY
+    exit
+fi
+
+if [ "$1" = "1080" ]; then
+    mpv --ytdl-format='bestvideo[height<=?1080]+bestaudio/best' $COPY
+    exit
+fi
+
+
+
+
+if [ "$1" = "pa" ]; then
+    mpv  --hwdec=auto --no-video $COPY
+    exit
+fi
+
+
+if [ "$1" = "l" ]; then
+    mpv  --hwdec=auto --playlist=$2
+    exit
+fi
+
+
+if [ "$1" = "la" ]; then
+    mpv  --hwdec=auto --playlist=$2 --no-video
+    exit
+fi
+
+
+if [ "$1" = "rc" ]; then
+rclone cat $SERVER/$2 | mpv --hwdec=auto --playlist=-
+    exit
+fi
+
+if [ "$1" = "rca" ]; then
+rclone cat $SERVER/$2 | mpv --hwdec=auto --no-video --playlist=-
+    exit
+fi
+
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ "$1" = "h" ]; then
+    help
+    exit
+fi
+
+
+
+if [ "$1" = "-U" ]; then
+$YOUTUBE -U
+exit
+fi
+
+
+if [ "$1" = "i" ]; then
+sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+sudo chmod a+rx /usr/local/bin/youtube-dl
+sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+sudo chmod a+rx /usr/local/bin/yt-dlp
+sudo apt install jq rename curl -y
+sudo apt install xclip -y
+# ffmpeg para convertir audio y incrustar imagen
+sudo apt install ffmpeg atomicparsley -y
+# actualizar youtube-dl
+$YOUTUBE -U
+    exit
+fi
+
+if [ "$1" = "cp-ytdlp" ]; then
+    sudo cp /usr/local/bin/yt-dlp /usr/local/bin/youtube-dl
+    exit
+fi
+
+
+if [ "$1" = "impv" ]; then
+# mpv para ubuntu
+sudo add-apt-repository ppa:mc3man/mpv-tests
+sudo apt-get update
+sudo apt install mpv
+    exit
+fi
+
+if [ "$1" = "ipython" ]; then
+sudo apt install python
+    exit
+fi
+
+if [ "$1" = "ivdl" ]; then
+sudo ln -s "$2" /usr/bin/vdl
+sudo chmod +x  /usr/bin/vdl
+    exit
+fi
+
+if [ "$1" = "st" ]; then
+    echo -ne "Introduce la url: " ; read URL
+ LC_ALL=$LC_ALL $YOUTUBE  --write-sub --sub-lang "$LANG" --skip-download --convert-subs srt $URL
+fi
+
+
+if [ "$1" = "F" ]; then
+    LC_ALL=$LC_ALL $YOUTUBE -F $COPY
+    echo " "
+    echo " "
+    echo "Introduce el número del formato del vídeo"
+    read $NUM
+    LC_ALL=$LC_ALL $YOUTUBE -f "$NUM" "$COPY"
+    exit
+fi
