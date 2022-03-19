@@ -182,11 +182,6 @@ LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --w
 fi
 
 if [ "$1" = "vlrc" ]; then
-LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json                 --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors $FORMAT "$(rclone cat "$NUBE""$2" | xargs)"
-    exit
-fi
-
-if [ "$1" = "vlrc" ]; then
 LC_ALL=$LC_ALL $YOUTUBE -o "$DIRV/%(uploader)s/%(title)s/%(title)s.%(ext)s"  --write-thumbnail --write-info-json                 --write-auto-sub --write-sub --sub-lang "$LANG" --ignore-errors $FORMAT "$(rclone cat "$NUBE""$2" | egrep -o 'https?://[^ ]+' | xargs)"
     exit
 fi
@@ -264,12 +259,12 @@ fi
 
 
 if [ "$1" = "rc" ]; then
-rclone cat $SERVER/$2 | mpv --hwdec=auto --playlist=-
+rclone cat $NUBE$2 | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --playlist=-
     exit
 fi
 
 if [ "$1" = "rca" ]; then
-rclone cat $SERVER/$2 | mpv --hwdec=auto --no-video --playlist=-
+rclone cat $NUBE$2 | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --no-video --playlist=-
     exit
 fi
 
