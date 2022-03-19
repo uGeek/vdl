@@ -87,7 +87,9 @@ if [ "$1" = "h" ]; then
     echo "la  lista.txt              Reproduce lista de audio en MPV"
     echo "rc  [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone. Si en la ruta hay espacios en blanco, ponlo entre comillas."
     echo "                                 Ejem: vdl rc Notas/Lista.md"
-    echo "rca [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone. Si en la ruta hay espacios en blanco, ponlo entre comillas"
+    echo "rca [Nombre de la lista]   Reproduce lista de audio con MPV. Lista en rclone. Si en la ruta hay espacios en blanco, ponlo entre comillas"
+    echo "rcyt  [Nombre de la lista] Reproduce lista con MPV. Lista en rclone. Para videos con imagen incrustada en formato md."
+    echo "rcayt [Nombre de la lista] Reproduce lista de audio con MPV. Lista en rclone. Para videos con imagen incrustada en formato md."
     echo ""
     echo ""
     echo "Instalación"
@@ -266,6 +268,16 @@ fi
 
 if [ "$1" = "rca" ]; then
 rclone cat "$NUBE$2" | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --no-video --playlist=-
+    exit
+fi
+
+if [ "$1" = "rcyt" ]; then
+rclone cat "$NUBE$2" | egrep -o 'https?://[^ ]+' | egrep -o 'https?://www.youtube[^ ]+' | mpv --hwdec=auto --playlist=-
+    exit
+fi
+
+if [ "$1" = "rcayt" ]; then
+rclone cat "$NUBE$2" | egrep -o 'https?://[^ ]+' | egrep -o 'https?://www.youtube[^ ]+' | mpv --hwdec=auto --no-video --playlist=-
     exit
 fi
 
