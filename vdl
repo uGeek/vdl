@@ -91,7 +91,13 @@ if [ "$1" = "h" ]; then
     echo "rcyt  [Nombre de la lista] Reproduce lista con MPV. Lista en rclone. Para videos con imagen incrustada en formato md."
     echo "rcayt [Nombre de la lista] Reproduce lista de audio con MPV. Lista en rclone. Para videos con imagen incrustada en formato md."
     echo ""
+    echo "   MPV. Atajos"
+    echo "   --------"
+    echo "   Siguiente vídeo =  Ctrl + > "
+    echo "   Anterior  vídeo =  Ctrl + < "
+    echo "   Velocidad de reproducción  [   /   ]    y    {   /   }  "
     echo ""
+    echo "" 
     echo "Instalación"
     echo "------------------------------------------"
     echo "-U                         Actualizar youtube-dl "
@@ -223,7 +229,7 @@ if [ "$1" = "360" ]; then
 fi
 
 
-
+https://samagame.com/blog/es/como-usar-mpv-cli-media-player/
 if [ "$1" = "480" ]; then
     mpv --ytdl-format='bestvideo[height<=?480]+bestaudio/best' $COPY
     exit
