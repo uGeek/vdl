@@ -96,7 +96,7 @@ if [ "$1" = "h" ]; then
     echo "ivdl                       Instalar el script en local vdl en tu distro. Ejem: vdl ivdl /home/usuario/vdl/vdl"
     echo "impv                       Instalar mpv a la última versión"
     echo "ipython                    Instalar python si no está instalado en tu máquina"
-    echo "cp-ytdlp                   Copiar encima de youtube-dl ytdlp"
+    echo "cp-ytdlp                   Copiar encima de youtube-dl ytdlp. Ideal para poder reproducir desde mpv con ytdlp, sin tener que configurar nada"
 fi
 
 
