@@ -85,8 +85,9 @@ if [ "$1" = "h" ]; then
     echo "pa                         Reproduce audio con MPV. Copia la url y lanza el comando"
     echo "l   lista.txt              Reproduce lista de video en MPV"
     echo "la  lista.txt              Reproduce lista de audio en MPV"
-    echo "rc  [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone"
-    echo "rca [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone"
+    echo "rc  [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone. Si en la ruta hay espacios en blanco, ponlo entre comillas."
+    echo "                                 Ejem: vdl rc Notas/Lista.md"
+    echo "rca [Nombre de la lista]   Reproduce lista con MPV. Lista en rclone. Si en la ruta hay espacios en blanco, ponlo entre comillas"
     echo ""
     echo ""
     echo "Instalación"
@@ -259,12 +260,12 @@ fi
 
 
 if [ "$1" = "rc" ]; then
-rclone cat $NUBE$2 | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --playlist=-
+rclone cat "$NUBE$2" | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --playlist=-
     exit
 fi
 
 if [ "$1" = "rca" ]; then
-rclone cat $NUBE$2 | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --no-video --playlist=-
+rclone cat "$NUBE$2" | egrep -o 'https?://[^ ]+' | mpv --hwdec=auto --no-video --playlist=-
     exit
 fi
 
