@@ -159,7 +159,7 @@ fi
 
 if [ "$1" = "a-mp3" ]; then
 echo -ne "Introduce la url: " ; read URL
-LC_ALL=$LC_ALL $YOUTUBE -o "%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors -x "$URL"
+LC_ALL=$LC_ALL $YOUTUBE -o "%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors "$URL"
 exit
 fi
 
@@ -167,7 +167,7 @@ fi
 
 if [ "$1" = "ac-mp3" ]; then
 echo -ne "Introduce la url: " ; read URL
-LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors  -x "$URL"
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors  "$URL"
 exit
 fi
 
