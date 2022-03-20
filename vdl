@@ -229,7 +229,6 @@ if [ "$1" = "360" ]; then
 fi
 
 
-https://samagame.com/blog/es/como-usar-mpv-cli-media-player/
 if [ "$1" = "480" ]; then
     mpv --ytdl-format='bestvideo[height<=?480]+bestaudio/best' $COPY
     exit
