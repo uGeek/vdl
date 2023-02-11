@@ -102,6 +102,7 @@ if [ "$1" = "h" ]; then
     echo "------------------------------------------"
     echo "-U                         Actualizar youtube-dl "
     echo "i                          Instalar paquetes necesarios de vdl en tu distro"
+    echo "i-a"                       Instalar paquetes necesarios de vdl para distros Arch"
     echo "ivdl                       Instalar el script en local vdl en tu distro. Ejem: vdl ivdl /home/usuario/vdl/vdl"
     echo "impv                       Instalar mpv a la última versión"
     echo "ipython                    Instalar python si no está instalado en tu máquina"
@@ -296,6 +297,13 @@ fi
 
 if [ "$1" = "-U" ]; then
 $YOUTUBE -U
+exit
+fi
+
+
+if [ "$1" = "i-arch" ]; then
+sudo pacman -S jq xclip  ffmpeg atomicparsley
+sudo yay -S yt-dlp
 exit
 fi
 
