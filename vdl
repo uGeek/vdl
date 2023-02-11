@@ -302,7 +302,7 @@ fi
 
 
 if [ "$1" = "i-arch" ]; then
-sudo pacman -S jq xclip  ffmpeg atomicparsley
+sudo pacman -S jq xclip  ffmpeg atomicparsley mpv
 sudo yay -S yt-dlp
 exit
 fi
