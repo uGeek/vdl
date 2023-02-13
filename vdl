@@ -2,9 +2,10 @@
 #
 # vdl
 #
-VERSION="       Version: 2022.03.20"
+VERSION="       Version: 2023.02.13"
 EDITOR="nano"
-COPY=$(xclip -o)
+#COPY=$(xclip -o)
+COPY=$(/usr/bin/xsel -ob)
 clear
 
 
@@ -302,7 +303,7 @@ fi
 
 
 if [ "$1" = "i-arch" ]; then
-sudo pacman -S jq xclip  ffmpeg atomicparsley mpv
+sudo pacman -S jq xclip xsel ffmpeg atomicparsley mpv
 sudo yay -S yt-dlp
 exit
 fi
