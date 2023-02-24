@@ -297,6 +297,7 @@ fi
 
 
 if [ "$1" = "-U" ]; then
+python3 -m pip install --upgrade yt-dlp
 $YOUTUBE -U
 exit
 fi
