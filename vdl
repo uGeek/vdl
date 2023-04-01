@@ -355,12 +355,14 @@ if [ "$1" = "st" ]; then
 fi
 
 
-if [ "$1" = "F" ]; then
-    LC_ALL=$LC_ALL $YOUTUBE -F $COPY
-    echo " "
-    echo " "
-    echo "Introduce el número del formato del vídeo"
-    read $NUM
-    LC_ALL=$LC_ALL $YOUTUBE -f "$NUM" "$COPY"
-    exit
-fi
+if [ "$1" = "F" ]; then                                                                                                                                                                         
+    echo -n "Introduce la URL: " ; read COPY                                                                                                                                                    
+    LC_ALL=$LC_ALL $YOUTUBE -F $COPY                                                                                                                                                            
+    echo " "                                                                                                                                                                                    
+    echo " "                                                                                                                                                                                    
+    echo -n "Introduce el número del formato del vídeo: " ; read NUM                                                                                                                            
+    echo -n "Introduce el número del formato del audio: " ; read AUD                                                                                                                            
+    LC_ALL=$LC_ALL $YOUTUBE -o '%(title)s.%(ext)s' --ignore-errors --write-thumbnail --write-info-json  --write-auto-sub  --write-sub --sub-lang "$LANG" --convert-subs srt $FORMAT -f "$NUM"+"\
+$AUD" "$COPY"                                                                                                                                                                                   
+    exit                                                                                                                                                                                        
+fi 
