@@ -2,10 +2,9 @@
 #
 # vdl
 #
-VERSION="       Version: 2023.02.13"
+VERSION="       Version: 2022.04.10"
 EDITOR="nano"
-#COPY=$(xclip -o)
-COPY=$(/usr/bin/xsel -ob)
+COPY=$(xclip -o)
 clear
 
 
@@ -103,7 +102,6 @@ if [ "$1" = "h" ]; then
     echo "------------------------------------------"
     echo "-U                         Actualizar youtube-dl "
     echo "i                          Instalar paquetes necesarios de vdl en tu distro"
-    echo "i-a"                       Instalar paquetes necesarios de vdl para distros Arch"
     echo "ivdl                       Instalar el script en local vdl en tu distro. Ejem: vdl ivdl /home/usuario/vdl/vdl"
     echo "impv                       Instalar mpv a la última versión"
     echo "ipython                    Instalar python si no está instalado en tu máquina"
@@ -169,7 +167,7 @@ fi
 
 if [ "$1" = "ac-mp3" ]; then
 echo -ne "Introduce la url: " ; read URL
-LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors  "$URL"
+LC_ALL=$LC_ALL $YOUTUBE -o "$DIR/%(uploader)s/%(title)s/%(title)s.%(ext)s" --add-metadata --embed-thumbnail --extract-audio --audio-format mp3  --ignore-errors --write-info-json --playlist-items $EPISODIOS  --write-thumbnail  --convert-thumbnails jpg "$URL"
 exit
 fi
 
@@ -298,14 +296,7 @@ fi
 
 if [ "$1" = "-U" ]; then
 python3 -m pip install --upgrade yt-dlp
-$YOUTUBE -U
-exit
-fi
-
-
-if [ "$1" = "i-arch" ]; then
-sudo pacman -S jq xclip xsel ffmpeg atomicparsley mpv
-sudo yay -S yt-dlp
+    $YOUTUBE -U
 exit
 fi
 
@@ -355,14 +346,49 @@ if [ "$1" = "st" ]; then
 fi
 
 
-if [ "$1" = "F" ]; then                                                                                                                                                                         
-    echo -n "Introduce la URL: " ; read COPY                                                                                                                                                    
-    LC_ALL=$LC_ALL $YOUTUBE -F $COPY                                                                                                                                                            
-    echo " "                                                                                                                                                                                    
-    echo " "                                                                                                                                                                                    
-    echo -n "Introduce el número del formato del vídeo: " ; read NUM                                                                                                                            
-    echo -n "Introduce el número del formato del audio: " ; read AUD                                                                                                                            
-    LC_ALL=$LC_ALL $YOUTUBE -o '%(title)s.%(ext)s' --ignore-errors --write-thumbnail --write-info-json  --write-auto-sub  --write-sub --sub-lang "$LANG" --convert-subs srt $FORMAT -f "$NUM"+"\
-$AUD" "$COPY"                                                                                                                                                                                   
-    exit                                                                                                                                                                                        
-fi 
+
+
+if [ "$1" = "F" ]; then
+    echo -n "Introduce la URL: " ; read COPY
+    FORMATOS="$(LC_ALL=$LC_ALL $YOUTUBE -F $COPY | grep -E "$2|$3")"
+    echo "$FORMATOS"
+    echo " "
+    echo " "
+    echo "VIDEO+AUDIO. Si visualizas dos archivos, estás de acuerdo y quieres exportar a 1080, pulsa [s]"
+    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "$FORMATOS" | grep -E "^137|^140" | sort | cut -d " " -f2-
+    echo "---------------------------------------------------------------------------------------------------------------"
+    echo " "
+    echo " "
+    read RESPUESTA
+
+    if [ "$RESPUESTA" = "SI" ] || [ "$RESPUESTA" = "S" ] || [ "$RESPUESTA" = "si" ] || [ "$RESPUESTA" = "s" ] || [ "$RESPUESTA" = "y" ] || [ "$RESPUESTA" = "yes" ]; then
+    NUM="137"	
+    AUD="140"
+    else
+    echo -n "Introduce el número del formato del vídeo: " ; read NUM
+    echo -n "Introduce el número del formato del audio: " ; read AUD    
+    fi
+    
+    LC_ALL=$LC_ALL $YOUTUBE -o '%(title)s.%(ext)s' --ignore-errors --write-thumbnail --write-info-json  --write-auto-sub  --write-sub --sub-lang "$LANG" --convert-subs srt $FORMAT -f "$NUM"+"$AUD" "$COPY"
+
+    exit
+fi
+
+
+
+
+if [ "$1" = "F" ]; then
+    echo -n "Introduce la URL: " ; read COPY
+    echo "$(LC_ALL=$LC_ALL $YOUTUBE -F $COPY | grep -E "$2|$3")"
+    echo " "
+    echo " "
+    echo -n "Introduce el número del formato del vídeo: " ; read NUM
+    echo -n "Introduce el número del formato del audio: " ; read AUD
+    LC_ALL=$LC_ALL $YOUTUBE -o '%(title)s.%(ext)s' --ignore-errors --write-thumbnail --write-info-json  --write-auto-sub  --write-sub --sub-lang "$LANG" --convert-subs srt $FORMAT -f "$NUM"+"$AUD" "$COPY"
+    exit
+fi
+
+
+
+
